@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Room - הזירה שבה אסטרטגיה הופכת לתוצאה</title>
+    <!-- טעינת Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- טעינת אייקונים Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --navy: #0f172a;
+            --background: #f8fafc;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-500 selection:text-white">
+
+    <!-- Header -->
+    <header id="site-header" class="sticky top-0 z-50 transition-all duration-300 bg-[#0f172a] text-white">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <span class="grid place-items-center w-10 h-10 rounded-[6px] bg-blue-600 text-white font-extrabold text-lg tracking-tight transition-transform group-hover:scale-105">
+                    BR
+                </span>
+                <span class="font-bold text-[19px] tracking-tight text-white">
+                    Business Room
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-9">
+                <a href="#solutions" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">פתרונות</a>
+                <a href="#trust" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">הוכחות</a>
+                <a href="#terminal" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">יצירת קשר</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#terminal" class="text-[15px] font-semibold text-white px-5 py-2.5 rounded-full border border-white/25 hover:border-white hover:bg-white/5 transition-colors">
+                    כניסה לניהול
+                </a>
+                <a href="https://wa.me/972500000000" target="_blank" rel="noreferrer" class="text-[15px] font-semibold text-blue-600 px-5 py-2.5 rounded-full bg-white hover:bg-white/90 transition-colors shadow-lg">
+                    דברו איתנו בווטסאפ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-blue-600 px-6 lg:px-10 pt-16 lg:pt-24 pb-24 lg:pb-32 text-white">
+            <div class="max-w-[1400px] mx-auto relative">
+                <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                    <div class="lg:col-span-7">
+                        <div class="flex items-center gap-3 mb-8">
+                            <span class="w-10 h-px bg-white/50"></span>
+                            <span class="text-white/80 text-sm font-semibold tracking-wider uppercase">מערכת ניהול מודולרית לעסקים מתקדמים</span>
+                        </div>
+
+                        <h1 class="font-extrabold tracking-tight text-white leading-[1.04] text-[44px] sm:text-[58px] lg:text-[76px]">
+                            הזירה שבה<br>אסטרטגיה הופכת<br>לתוצאה.
+                        </h1>
+
+                        <p class="mt-8 max-w-xl text-[19px] leading-[1.6] text-white/80">
+                            בקום לנהל בין חמש מערכות, קבצים אבודים וקבוצות ווטסאפ — ריכזנו את כל ניהול העסק למקום אחד. חכם, אוטומטי ומדויק.
+                        </p>
+
+                        <div class="mt-10 flex flex-wrap items-center gap-4">
+                            <a href="#terminal" class="group inline-flex items-center gap-3 bg-white hover:bg-white/90 text-blue-600 font-bold text-[17px] px-7 py-4 rounded-full transition-colors shadow-xl">
+                                התחל שינוי
+                                <i data-lucide="arrow-left" class="w-5 h-5 transition-transform group-hover:-translate-x-1"></i>
+                            </a>
+                            <a href="#solutions" class="text-[17px] font-medium text-white/85 hover:text-white transition-colors underline underline-offset-8">
+                                ראה איך זה עובד
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative aspect-[4/5] lg:aspect-[3/4] w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/20 flex items-center justify-center p-8 text-center">
+                            <div class="space-y-4">
+                                <i data-lucide="rocket" class="w-16 h-16 mx-auto text-white/80"></i>
+                                <h3 class="text-2xl font-bold">Business Room Live</h3>
+                                <p class="text-white/70 text-sm">המערכת המרכזית לשליטה מלאה בעסק שלך</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logic Grid -->
+        <section id="solutions" class="py-24 lg:py-32 px-6 lg:px-10 bg-[#f8fafc]">
+            <div class="max-w-[1400px] mx-auto">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+                    <div class="max-w-2xl">
+                        <div class="flex items-center gap-3 mb-5">
+                            <span class="w-10 h-px bg-blue-600"></span>
+                            <span class="text-blue-600 font-semibold text-sm uppercase">הלוגיקה</span>
+                        </div>
+                        <h2 class="font-extrabold text-slate-900 text-[34px] sm:text-[44px] leading-[1.1] tracking-tight">
+                            מערכת אחת מודולרית — לכל צווארי הבקבוק של העסק.
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <article class="bg-blue-600 rounded-[18px] p-8 sm:p-10 text-white flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="grid place-items-center w-14 h-14 rounded-[12px] bg-white/15 text-white">
+                                    <i data-lucide="megaphone" class="w-7 h-7"></i>
+                                </span>
+                                <span class="text-white/70 font-semibold">שיווק</span>
+                            </div>
+                            <h3 class="font-extrabold text-white text-[28px] sm:text-[32px] mb-6">
+                                שיווק שקורה — גם כשאתה לא יושב מולו
+                            </h3>
+                            <div class="space-y-4 text-[17px] leading-[1.6]">
+                                <p class="text-white/80"><strong>הבעיה — </strong> אתה יודע שצריך לפרסם באופן קבוע, אבל מתי נשאר זמן?</p>
+                                <p class="text-white/95"><strong>הפתרון — </strong> המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="space-y-3">
+                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
+                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-blue-600 text-white">
+                                <i data-lucide="wallet" class="w-6 h-6"></i>
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-lg">פיננסים ותזרים</h4>
+                                <p class="text-sm text-slate-600">לדעת בדיוק איפה העסק עומד בכל רגע נתון</p>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
+                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-slate-100 text-slate-700">
+                                <i data-lucide="folder-kanban" class="w-6 h-6"></i>
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-lg">ניהול משרד</h4>
+                                <p class="text-sm text-slate-600">כל התיק המשרדי במקום אחד בלי שיאבד דבר</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminal / Contact Form -->
+        <section id="terminal" class="relative px-6 lg:px-10 py-24 bg-blue-600 text-white">
+            <div class="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7">
+                    <h2 class="font-extrabold text-[36px] sm:text-[48px] leading-[1.08] mb-6">
+                        מוכנים להפסיק<br>לנהל הכל לבד?
+                    </h2>
+                    <p class="text-[18px] text-white/80 max-w-xl">
+                        שלושה שדות בלבד — ואנחנו כבר בדרך אליכם עם מענה דיסקרטי ומקצועי.
+                    </p>
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="bg-white text-slate-900 rounded-[18px] p-7 sm:p-9 shadow-2xl">
+                        <h3 class="font-extrabold text-2xl mb-4">יצירת קשר</h3>
+                        <form onsubmit="event.preventDefault(); alert('הפנייה נקלטים בהצלחה!');" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1">שם מלא *</label>
+                                <input type="text" required placeholder="ישראל ישראלי" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1">טלפון נייד *</label>
+                                <input type="tel" required placeholder="050-0000000" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-full transition-colors shadow-lg">
+                                התחל שינוי
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f172a] text-white/70 px-6 lg:px-10 py-12 text-center">
+        <p class="text-sm">© 2026 Business Room — כל הזכויות שמורות.</p>
+    </footer>
+
+    <!-- הפעלת אייקונים -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
