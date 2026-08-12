@@ -1,765 +1,194 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Image } from "@/components/ui/image";
-import { useToast } from "@/components/ui/use-toast";
-import { base44 } from "@/api/base44Client";
-import {
-  Menu,
-  X,
-  ArrowLeft,
-  Megaphone,
-  Wallet,
-  FolderKanban,
-  Users,
-  Rocket,
-  CheckCircle2,
-  Loader2,
-} from "lucide-react";
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Room - הזירה שבה אסטרטגיה הופכת לתוצאה</title>
+    <!-- טעינת Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- טעינת אייקונים Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --navy: #0f172a;
+            --background: #f8fafc;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-500 selection:text-white">
 
-const HERO_IMG =
-  "/__generating__/db6d2863-4a3f-49fa-8835-8cb8331daeb2.png";
-
-const NAV = [
-  { label: "פתרונות", href: "#solutions" },
-  { label: "הוכחות", href: "#trust" },
-  { label: "יצירת קשר", href: "#terminal" },
-];
-
-const CLIENTS = [
-  "אקו נדל״ן",
-  "סטודיו קובלט",
-  "מכון פיסק",
-  "גרין פארם",
-  "לוי ארכיטקטים",
-  "טקסטורה",
-  "אורבן פיננס",
-];
-
-const TESTIMONIALS = [
-  {
-    q: "תוך שבועיים עברנו מקובץ ווטסאפ למערכת מסודרת. התזרים שלי סוף־סוף שקוף.",
-    n: "עידן לוי",
-    r: "מנכ״ל, אקו נדל״ן",
-  },
-  {
-    q: "הקמפיינים רצים לבד. חסכתי שבע שעות בשבוע וההכנסה רק עלתה.",
-    n: "מאיה קובלט",
-    r: "בעלים, סטודיו קובלט",
-  },
-  {
-    q: "הצוות סוף־סוף יודע מה קורה. אפס משימות שנופלות בין הכיסאות.",
-    n: "רון פיסק",
-    r: "מנהל, מכון פיסק",
-  },
-];
-
-const DOMAINS = [
-  {
-    id: "marketing",
-    icon: Megaphone,
-    tag: "שיווק",
-    title: "שיווק שקורה — גם כשאתה לא יושב מולו",
-    problem:
-      "אתה יודע שצריך להיות פעיל ברשתות ולפרסם באופן קבוע, אבל בין לקוחות לספקים — מתי בכלל נשאר זמן לתכנן תוכן?",
-    solution:
-      "המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד — פוסט אינסטגרם, קמפיין וואטסאפ ודיוורים, מתוזמנים אוטומטית.",
-    metric: "קמפיינים מתוזמנים",
-    proof: [
-      { label: "ראשון 08:30 — פוסט אינסטגרם", state: "מתוזמן" },
-      { label: "שלישי 12:00 — קמפיין וואטסאפ", state: "פעיל" },
-    ],
-  },
-  {
-    id: "finance",
-    icon: Wallet,
-    tag: "פיננסים",
-    title: "לדעת בדיוק איפה העסק עומד — בכל רגע נתון",
-    problem:
-      "הצעות מחיר שנשלחות באיחור, חשבוניות שנשכחות ותזרימים שקשה לעקוב אחריהם עולים לך כסף אמיתי.",
-    solution:
-      "הכל אוטומטי, מדויק ובזמן אמת — רווח יזמי נטו אחרי הוצאות, מס, עתודה ומעשרות, מול העיניים שלך.",
-    metric: "₪48,250 נטו",
-    proof: [
-      { label: "רווח יזמי נטו — שנת המס", state: "₪ 48,250" },
-      { label: "מעקב הוצאות ותזרים", state: "בזמן אמת" },
-    ],
-  },
-  {
-    id: "office",
-    icon: FolderKanban,
-    tag: "ניהול משרד",
-    title: "כל התיק המשרדי במקום אחד — לא נשכח שוב",
-    problem:
-      "לקוחות, משימות, טפסים וחוזים מפוזרים בין וואטסאפ, מייל ופתקים צהובים. קל מדי לאבד משהו חשוב באמצע היום.",
-    solution:
-      "כרטיסי לקוחות, יומן ומשימות, חוזים וטפסים — הכול מרוכז, מסודר ונגיש מכל מכשיר.",
-    metric: "0 משימות באיחור",
-    proof: [
-      { label: "כרטיסי לקוחות", state: "מרוכז" },
-      { label: "יומן ומשימות", state: "מסונכרן" },
-    ],
-  },
-  {
-    id: "team",
-    icon: Users,
-    tag: "ניהול צוות",
-    title: "צוות שיודע מה קורה — עובד מהר יותר",
-    problem:
-      "לתאם צוות זו עבודה בפני עצמה — מי עשה מה, מי נמצא היום, והכול מדברים באותה שפה בלי בלגן.",
-    solution:
-      "שעון נוכחות, דיווח שעות ואישורים אוטומטיים, ערוץ צוותי מסודר שמחליף קבוצת וואטסאפ כאוטית.",
-    metric: "נוכחות אוטומטית",
-    proof: [
-      { label: "דיווח שעות ונוכחות", state: "אוטומטי" },
-      { label: "ערוץ צוותי מאוחד", state: "פעיל" },
-    ],
-  },
-  {
-    id: "projects",
-    icon: Rocket,
-    tag: "תכנון פרויקט",
-    title: "כל פרויקט מתוכנן, עוקב אחר עצמו ומתריע בזמן",
-    problem:
-      "פרויקט בלי ציר זמן ברור הוא רעיון בלי תאריך. וכשיש כמה פרויקטים במקביל — קל מאוד לאבד שליטה.",
-    solution:
-      "גאנט חכם, מעקב התקדמות אוטומטי והתראות מיידיות כשמשהו מתעכב — לפני שזה עולה לך בלקוח.",
-    metric: "אפס איחורים",
-    proof: [
-      { label: "מעקב התקדמות אוטומטי", state: "פעיל" },
-      { label: "התראות איחור", state: "מיידיות" },
-    ],
-  },
-];
-
-const INTERESTS = [
-  "שיווק אוטומטי",
-  "פיננסים",
-  "ניהול משרד",
-  "ניהול צוות",
-  "תכנון פרויקט",
-  "כללי",
-];
-
-/* ---------- Header ---------- */
-function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 bg-[hsl(var(--navy))] ${
-        scrolled ? "shadow-lg shadow-black/20" : ""
-      }`}
-    >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group">
-          <span className="grid place-items-center w-10 h-10 rounded-[6px] bg-[hsl(var(--primary))] text-white font-extrabold text-lg tracking-tight transition-transform group-hover:scale-105">
-            BR
-          </span>
-          <span className="font-heading font-extrabold text-[19px] tracking-tight text-white">
-            Business Room
-          </span>
-        </Link>
-
-        <nav className="hidden md:flex items-center gap-9">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="text-[15px] font-medium text-white/70 hover:text-white transition-colors"
-            >
-              {n.label}
+    <!-- Header -->
+    <header id="site-header" class="sticky top-0 z-50 transition-all duration-300 bg-[#0f172a] text-white">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <span class="grid place-items-center w-10 h-10 rounded-[6px] bg-blue-600 text-white font-extrabold text-lg tracking-tight transition-transform group-hover:scale-105">
+                    BR
+                </span>
+                <span class="font-bold text-[19px] tracking-tight text-white">
+                    Business Room
+                </span>
             </a>
-          ))}
-        </nav>
 
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href="#terminal"
-            className="text-[15px] font-semibold text-white px-5 py-2.5 rounded-full border border-white/25 hover:border-white hover:bg-white/5 transition-colors"
-          >
-            כניסה לניהול
-          </a>
-          <a
-            href="https://wa.me/972500000000"
-            target="_blank"
-            rel="noreferrer"
-            className="text-[15px] font-semibold text-[hsl(var(--primary))] px-5 py-2.5 rounded-full bg-white hover:bg-white/90 transition-colors shadow-lg shadow-black/20"
-          >
-            דברו איתנו בווטסאפ
-          </a>
+            <nav class="hidden md:flex items-center gap-9">
+                <a href="#solutions" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">פתרונות</a>
+                <a href="#trust" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">הוכחות</a>
+                <a href="#terminal" class="text-[15px] font-medium text-white/70 hover:text-white transition-colors">יצירת קשר</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#terminal" class="text-[15px] font-semibold text-white px-5 py-2.5 rounded-full border border-white/25 hover:border-white hover:bg-white/5 transition-colors">
+                    כניסה לניהול
+                </a>
+                <a href="https://wa.me/972500000000" target="_blank" rel="noreferrer" class="text-[15px] font-semibold text-blue-600 px-5 py-2.5 rounded-full bg-white hover:bg-white/90 transition-colors shadow-lg">
+                    דברו איתנו בווטסאפ
+                </a>
+            </div>
         </div>
-
-        <button
-          className="md:hidden p-2 -mr-2 text-white"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="פתח תפריט"
-          aria-expanded={open}
-        >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="md:hidden bg-[hsl(var(--navy))] border-t border-white/10 px-6 py-5 space-y-4">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              onClick={() => setOpen(false)}
-              className="block text-base font-medium text-white/80"
-            >
-              {n.label}
-            </a>
-          ))}
-          <a
-            href="https://wa.me/972500000000"
-            target="_blank"
-            rel="noreferrer"
-            className="block text-center text-[hsl(var(--primary))] px-5 py-3 rounded-full bg-white font-semibold"
-          >
-            דברו איתנו בווטסאפ
-          </a>
-        </div>
-      )}
     </header>
-  );
-}
 
-/* ---------- Hero ---------- */
-function AuthorityHero() {
-  return (
-    <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 lg:px-10 pt-16 lg:pt-24 pb-24 lg:pb-32">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.08] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
+    <main>
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-blue-600 px-6 lg:px-10 pt-16 lg:pt-24 pb-24 lg:pb-32 text-white">
+            <div class="max-w-[1400px] mx-auto relative">
+                <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                    <div class="lg:col-span-7">
+                        <div class="flex items-center gap-3 mb-8">
+                            <span class="w-10 h-px bg-white/50"></span>
+                            <span class="text-white/80 text-sm font-semibold tracking-wider uppercase">מערכת ניהול מודולרית לעסקים מתקדמים</span>
+                        </div>
 
-      <div className="max-w-[1400px] mx-auto relative">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          <div className="lg:col-span-7 text-white">
-            <div className="flex items-center gap-3 mb-8">
-              <span className="w-10 h-px bg-white/50" />
-              <span className="eyebrow text-white/80">
-                מערכת ניהול מודולרית לעסקים מתקדמים
-              </span>
-            </div>
+                        <h1 class="font-extrabold tracking-tight text-white leading-[1.04] text-[44px] sm:text-[58px] lg:text-[76px]">
+                            הזירה שבה<br>אסטרטגיה הופכת<br>לתוצאה.
+                        </h1>
 
-            <h1 className="font-heading font-extrabold tracking-tight text-white leading-[1.04] text-[44px] sm:text-[58px] lg:text-[76px]">
-              הזירה שבה
-              <br />
-              אסטרטגיה הופכת
-              <br />
-              לתוצאה.
-            </h1>
+                        <p class="mt-8 max-w-xl text-[19px] leading-[1.6] text-white/80">
+                            בקום לנהל בין חמש מערכות, קבצים אבודים וקבוצות ווטסאפ — ריכזנו את כל ניהול העסק למקום אחד. חכם, אוטומטי ומדויק.
+                        </p>
 
-            <p className="mt-8 max-w-xl text-[19px] leading-[1.6] text-white/80">
-              במקום לנהר בין חמש מערכות, קבצים אבודים וקבוצות ווטסאפ — ריכזנו את
-              כל ניהול העסק למקום אחד. חכם, אוטומטי ומדויק, כך שכל החלטה שלך
-              נשענת על נתונים — ולא על ניחושים.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a
-                href="#terminal"
-                className="group inline-flex items-center gap-3 bg-white hover:bg-white/90 text-[hsl(var(--primary))] font-bold text-[17px] px-7 py-4 rounded-full transition-colors shadow-xl shadow-black/20"
-              >
-                התחל שינוי
-                <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-              </a>
-              <a
-                href="#solutions"
-                className="text-[17px] font-medium text-white/85 hover:text-white transition-colors underline underline-offset-8 decoration-white/40"
-              >
-                ראה איך זה עובד
-              </a>
-            </div>
-
-            <div className="mt-14 grid grid-cols-3 gap-6 max-w-lg">
-              {[
-                { k: "₪ 48,250", v: "רווח יזמי נטו, שנת מס" },
-                { k: "0", v: "משימות באיחור" },
-                { k: "5→1", v: "מערכות למקום אחד" },
-              ].map((m) => (
-                <div key={m.v}>
-                  <div className="h-px w-full bg-white/25 mb-3" />
-                  <div className="font-heading font-extrabold text-2xl text-white">
-                    {m.k}
-                  </div>
-                  <div className="text-[13px] text-white/65 mt-1 leading-snug">
-                    {m.v}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] lg:aspect-[3/4] w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/20">
-              <Image
-                src={HERO_IMG}
-                alt="חלל עבודה מודרני בקומה גבוהה, מבט אל האופק דרך חלון ענק, תאורת בוקר קרה"
-                className="w-full h-full"
-                fittingType="fill"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary))]/40 via-transparent to-transparent" />
-            </div>
-
-            <div className="absolute -bottom-6 -right-3 lg:-right-6 bg-white rounded-2xl p-5 shadow-2xl shadow-black/25 max-w-[240px]">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[12px] font-semibold text-foreground/55 uppercase tracking-wider">
-                  דשבורד חי • Business Room
-                </span>
-              </div>
-              <div className="font-heading font-extrabold text-foreground text-[17px] leading-snug mb-3">
-                קמפיינים פעילים, תזרים מסודר, צוות מתואם.
-              </div>
-              <div className="flex items-center justify-between text-[13px]">
-                <span className="text-foreground/50">רווח יזמי</span>
-                <span className="font-bold text-[hsl(var(--primary))]">₪ 48,250</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Logic Grid ---------- */
-function LogicGrid() {
-  const [active, setActive] = useState("marketing");
-  const domain = DOMAINS.find((d) => d.id === active);
-  const Icon = domain.icon;
-
-  return (
-    <section id="solutions" className="py-24 lg:py-32 px-6 lg:px-10 bg-[hsl(var(--background))]">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-5">
-              <span className="w-10 h-px bg-[hsl(var(--primary))]" />
-              <span className="eyebrow text-[hsl(var(--primary))]">הלוגיקה</span>
-            </div>
-            <h2 className="font-heading font-extrabold text-foreground text-[34px] sm:text-[44px] leading-[1.1] tracking-tight">
-              מערכת אחת מודולרית — לכל צווארי הבקבוק של העסק.
-            </h2>
-          </div>
-          <p className="text-[18px] leading-[1.6] text-foreground/60 max-w-md">
-            חמישה תחומים, תשובה אחת. בחר תחום וגלה איך Business Room פותר את הבעיה מהשורש.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-6">
-          <article className="bg-[hsl(var(--primary))] rounded-[18px] p-8 sm:p-10 text-white flex flex-col min-h-[420px]">
-            <div className="flex items-center justify-between mb-6">
-              <span className="grid place-items-center w-14 h-14 rounded-[12px] bg-white/15 text-white">
-                <Icon className="w-7 h-7" strokeWidth={2} />
-              </span>
-              <span className="eyebrow text-white/70">{domain.tag}</span>
-            </div>
-
-            <h3 className="font-heading font-extrabold text-white text-[28px] sm:text-[32px] leading-[1.12] mb-6 tracking-tight">
-              {domain.title}
-            </h3>
-
-            <div className="space-y-4 text-[17px] leading-[1.6]">
-              <p className="text-white/80">
-                <span className="font-bold text-white">הבעיה — </span>
-                {domain.problem}
-              </p>
-              <p className="text-white/95">
-                <span className="font-bold text-white">הפתרון — </span>
-                {domain.solution}
-              </p>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-white/20 space-y-3">
-              {domain.proof.map((p) => (
-                <div key={p.label} className="flex items-center justify-between text-[15px]">
-                  <span className="text-white/75">{p.label}</span>
-                  <span className="font-semibold text-white bg-white/15 px-3 py-1 rounded-[6px]">
-                    {p.state}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <a
-              href="#terminal"
-              className="mt-8 inline-flex items-center gap-2 text-[15px] font-bold text-white hover:gap-3 transition-all w-fit"
-            >
-              בוא נדבר על {domain.tag}
-              <ArrowLeft className="w-4 h-4" />
-            </a>
-          </article>
-
-          <div className="space-y-3">
-            {DOMAINS.map((d) => {
-              const ItemIcon = d.icon;
-              const isActive = d.id === active;
-              return (
-                <button
-                  key={d.id}
-                  onClick={() => setActive(d.id)}
-                  className={`w-full text-right flex items-center gap-5 p-5 sm:p-6 rounded-[14px] border transition-all duration-200 ${
-                    isActive
-                      ? "bg-card border-[hsl(var(--primary))] shadow-lg shadow-[hsl(var(--primary))]/10"
-                      : "bg-card border-foreground/10 hover:border-foreground/25 hover:bg-foreground/[0.02]"
-                  }`}
-                >
-                  <span
-                    className={`grid place-items-center w-12 h-12 rounded-[10px] shrink-0 transition-colors ${
-                      isActive
-                        ? "bg-[hsl(var(--primary))] text-white"
-                        : "bg-foreground/5 text-foreground/60"
-                    }`}
-                  >
-                    <ItemIcon className="w-6 h-6" strokeWidth={2} />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-3">
-                      <h4 className={`font-heading font-bold text-[19px] tracking-tight ${isActive ? "text-foreground" : "text-foreground/80"}`}>
-                        {d.tag}
-                      </h4>
-                      <span className={`text-[13px] font-semibold ${isActive ? "text-[hsl(var(--primary))]" : "text-foreground/45"}`}>
-                        {d.metric}
-                      </span>
+                        <div class="mt-10 flex flex-wrap items-center gap-4">
+                            <a href="#terminal" class="group inline-flex items-center gap-3 bg-white hover:bg-white/90 text-blue-600 font-bold text-[17px] px-7 py-4 rounded-full transition-colors shadow-xl">
+                                התחל שינוי
+                                <i data-lucide="arrow-left" class="w-5 h-5 transition-transform group-hover:-translate-x-1"></i>
+                            </a>
+                            <a href="#solutions" class="text-[17px] font-medium text-white/85 hover:text-white transition-colors underline underline-offset-8">
+                                ראה איך זה עובד
+                            </a>
+                        </div>
                     </div>
-                    <p className="text-[14px] text-foreground/55 mt-1 truncate">
-                      {d.title}
+
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative aspect-[4/5] lg:aspect-[3/4] w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/20 flex items-center justify-center p-8 text-center">
+                            <div class="space-y-4">
+                                <i data-lucide="rocket" class="w-16 h-16 mx-auto text-white/80"></i>
+                                <h3 class="text-2xl font-bold">Business Room Live</h3>
+                                <p class="text-white/70 text-sm">המערכת המרכזית לשליטה מלאה בעסק שלך</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logic Grid -->
+        <section id="solutions" class="py-24 lg:py-32 px-6 lg:px-10 bg-[#f8fafc]">
+            <div class="max-w-[1400px] mx-auto">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+                    <div class="max-w-2xl">
+                        <div class="flex items-center gap-3 mb-5">
+                            <span class="w-10 h-px bg-blue-600"></span>
+                            <span class="text-blue-600 font-semibold text-sm uppercase">הלוגיקה</span>
+                        </div>
+                        <h2 class="font-extrabold text-slate-900 text-[34px] sm:text-[44px] leading-[1.1] tracking-tight">
+                            מערכת אחת מודולרית — לכל צווארי הבקבוק של העסק.
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <article class="bg-blue-600 rounded-[18px] p-8 sm:p-10 text-white flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="grid place-items-center w-14 h-14 rounded-[12px] bg-white/15 text-white">
+                                    <i data-lucide="megaphone" class="w-7 h-7"></i>
+                                </span>
+                                <span class="text-white/70 font-semibold">שיווק</span>
+                            </div>
+                            <h3 class="font-extrabold text-white text-[28px] sm:text-[32px] mb-6">
+                                שיווק שקורה — גם כשאתה לא יושב מולו
+                            </h3>
+                            <div class="space-y-4 text-[17px] leading-[1.6]">
+                                <p class="text-white/80"><strong>הבעיה — </strong> אתה יודע שצריך לפרסם באופן קבוע, אבל מתי נשאר זמן?</p>
+                                <p class="text-white/95"><strong>הפתרון — </strong> המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="space-y-3">
+                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
+                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-blue-600 text-white">
+                                <i data-lucide="wallet" class="w-6 h-6"></i>
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-lg">פיננסים ותזרים</h4>
+                                <p class="text-sm text-slate-600">לדעת בדיוק איפה העסק עומד בכל רגע נתון</p>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
+                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-slate-100 text-slate-700">
+                                <i data-lucide="folder-kanban" class="w-6 h-6"></i>
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-lg">ניהול משרד</h4>
+                                <p class="text-sm text-slate-600">כל התיק המשרדי במקום אחד בלי שיאבד דבר</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terminal / Contact Form -->
+        <section id="terminal" class="relative px-6 lg:px-10 py-24 bg-blue-600 text-white">
+            <div class="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7">
+                    <h2 class="font-extrabold text-[36px] sm:text-[48px] leading-[1.08] mb-6">
+                        מוכנים להפסיק<br>לנהל הכל לבד?
+                    </h2>
+                    <p class="text-[18px] text-white/80 max-w-xl">
+                        שלושה שדות בלבד — ואנחנו כבר בדרך אליכם עם מענה דיסקרטי ומקצועי.
                     </p>
-                  </div>
-                  <ArrowLeft
-                    className={`w-5 h-5 shrink-0 transition-colors ${isActive ? "text-[hsl(var(--primary))]" : "text-foreground/25"}`}
-                  />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Trust Horizon ---------- */
-function TrustHorizon() {
-  return (
-    <section id="trust" className="py-20 lg:py-28 px-6 lg:px-10 bg-card border-y border-foreground/10">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="flex items-center gap-3 mb-10 justify-center">
-          <span className="w-8 h-px bg-foreground/20" />
-          <span className="eyebrow text-foreground/45">
-            מנהלים שכבר עברו ל־Business Room
-          </span>
-          <span className="w-8 h-px bg-foreground/20" />
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-x-6 gap-y-8 items-center mb-16">
-          {CLIENTS.map((c) => (
-            <div
-              key={c}
-              className="text-center font-heading font-bold text-[18px] tracking-tight text-foreground/35 grayscale hover:text-[hsl(var(--primary))] hover:grayscale-0 transition-all duration-300 cursor-default"
-            >
-              {c}
-            </div>
-          ))}
-        </div>
-
-        <div className="grid sm:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t) => (
-            <figure
-              key={t.n}
-              className="bg-[hsl(var(--background))] border border-foreground/10 rounded-[16px] p-7 flex flex-col"
-            >
-              <div className="text-[hsl(var(--primary))] font-heading font-extrabold text-5xl leading-none mb-2">
-                ”
-              </div>
-              <blockquote className="text-[16px] leading-[1.6] text-foreground/80 flex-1">
-                {t.q}
-              </blockquote>
-              <figcaption className="flex items-center gap-3 mt-6 pt-5 border-t border-foreground/10">
-                <span className="grid place-items-center w-11 h-11 rounded-full bg-[hsl(var(--primary))] text-white font-heading font-bold text-[15px] shrink-0">
-                  {t.n.charAt(0)}
-                </span>
-                <div>
-                  <div className="font-heading font-bold text-foreground text-[15px]">
-                    {t.n}
-                  </div>
-                  <div className="text-[13px] text-foreground/55">{t.r}</div>
                 </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Decision Terminal (lead form) ---------- */
-function DecisionTerminal() {
-  const { toast } = useToast();
-  const [form, setForm] = useState({ full_name: "", phone: "", interest: "כללי" });
-  const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-
-  const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-
-  const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await base44.entities.Lead.create({
-        full_name: form.full_name.trim(),
-        phone: form.phone.trim(),
-        interest: form.interest,
-      });
-      setDone(true);
-      toast({
-        title: "הליד נשמר בהצלחה",
-        description: "נציג יצור איתך קשר בהקדם.",
-      });
-    } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "משהו השתבש",
-        description: "נא נסה שוב או פנה אלינו בווטסאפ.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <section id="terminal" className="relative px-6 lg:px-10 py-24 lg:py-32 overflow-hidden bg-[hsl(var(--primary))]">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.08] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
-
-      <div className="max-w-[1400px] mx-auto relative grid lg:grid-cols-12 gap-10 items-center">
-        <div className="lg:col-span-7 text-white">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-10 h-px bg-white/50" />
-            <span className="eyebrow text-white/80">חדר ההחלטות</span>
-          </div>
-          <h2 className="font-heading font-extrabold text-[36px] sm:text-[48px] lg:text-[56px] leading-[1.08] tracking-tight">
-            מוכנים להפסיק
-            <br />
-            לנהל הכול לבד?
-          </h2>
-          <p className="mt-6 max-w-xl text-[18px] leading-[1.6] text-white/80">
-            ספרו לנו מי אתם ובאיזה תחום תרצו שנתחיל. נציג יצור קשר ויראה לכם — בשיחה
-            אישית ודיסקרטית — איך Business Room יחסוך לכם זמן וכסף מהשבוע הראשון.
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-6 text-white/70 text-[15px]">
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-white" /> שיחה ראשונית ללא עלות
-            </span>
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-white" /> ללא התחייבות
-            </span>
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-white" /> תגובה תוך 24 שעות
-            </span>
-          </div>
-        </div>
-
-        <div className="lg:col-span-5">
-          <div className="bg-white rounded-[18px] p-7 sm:p-9 shadow-2xl shadow-black/30">
-            {done ? (
-              <div className="text-center py-10">
-                <div className="grid place-items-center w-16 h-16 rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] mx-auto mb-5">
-                  <CheckCircle2 className="w-9 h-9" />
+                <div class="lg:col-span-5">
+                    <div class="bg-white text-slate-900 rounded-[18px] p-7 sm:p-9 shadow-2xl">
+                        <h3 class="font-extrabold text-2xl mb-4">יצירת קשר</h3>
+                        <form onsubmit="event.preventDefault(); alert('הפנייה נקלטים בהצלחה!');" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1">שם מלא *</label>
+                                <input type="text" required placeholder="ישראל ישראלי" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1">טלפון נייד *</label>
+                                <input type="tel" required placeholder="050-0000000" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-full transition-colors shadow-lg">
+                                התחל שינוי
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <h3 className="font-heading font-extrabold text-foreground text-[24px] mb-2">
-                  תודה רבה!
-                </h3>
-                <p className="text-foreground/60 text-[16px] leading-[1.6] max-w-xs mx-auto">
-                  קיבלנו את פנייתך. נציג יצור איתך קשר בהקדם האפשרי.
-                </p>
-                <button
-                  onClick={() => {
-                    setDone(false);
-                    setForm({ full_name: "", phone: "", interest: "כללי" });
-                  }}
-                  className="mt-6 text-[15px] font-semibold text-[hsl(var(--primary))] hover:underline"
-                >
-                  שלח פנייה נוספת
-                </button>
-              </div>
-            ) : (
-              <>
-                <h3 className="font-heading font-extrabold text-foreground text-[22px] mb-1">
-                  יצירת קשר
-                </h3>
-                <p className="text-foreground/55 text-[15px] mb-6">
-                  שלושה שדות בלבד — ואנחנו כבר בדרך אליכם.
-                </p>
-                <form onSubmit={submit} className="space-y-4">
-                  <div>
-                    <label htmlFor="full_name" className="block text-[13px] font-semibold text-foreground/70 mb-1.5">
-                      שם מלא *
-                    </label>
-                    <input
-                      id="full_name"
-                      type="text"
-                      required
-                      value={form.full_name}
-                      onChange={update("full_name")}
-                      placeholder="ישראל ישראלי"
-                      className="w-full rounded-[10px] border border-foreground/15 bg-[hsl(var(--background))] px-4 py-3 text-[16px] text-foreground placeholder:text-foreground/35 focus:border-[hsl(var(--primary))]"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-[13px] font-semibold text-foreground/70 mb-1.5">
-                      טלפון נייד *
-                    </label>
-                    <input
-                      id="phone"
-                      type="tel"
-                      required
-                      value={form.phone}
-                      onChange={update("phone")}
-                      placeholder="050-0000000"
-                      className="w-full rounded-[10px] border border-foreground/15 bg-[hsl(var(--background))] px-4 py-3 text-[16px] text-foreground placeholder:text-foreground/35 focus:border-[hsl(var(--primary))]"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="interest" className="block text-[13px] font-semibold text-foreground/70 mb-1.5">
-                      תחום עניין
-                    </label>
-                    <select
-                      id="interest"
-                      value={form.interest}
-                      onChange={update("interest")}
-                      className="w-full rounded-[10px] border border-foreground/15 bg-[hsl(var(--background))] px-4 py-3 text-[16px] text-foreground focus:border-[hsl(var(--primary))]"
-                    >
-                      {INTERESTS.map((i) => (
-                        <option key={i} value={i}>
-                          {i}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-[hsl(var(--primary))] hover:bg-[hsl(225_100%_49%)] disabled:opacity-60 text-white font-bold text-[17px] px-6 py-4 rounded-full transition-colors shadow-lg shadow-[hsl(var(--primary))]/25 mt-2"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" /> שולח...
-                      </>
-                    ) : (
-                      <>
-                        התחל שינוי
-                        <ArrowLeft className="w-5 h-5" />
-                      </>
-                    )}
-                  </button>
-                  <p className="text-center text-[12px] text-foreground/40 pt-1">
-                    הפרטים נשמרים אצלנו בלבד ואינם מועברים לצד שלישי.
-                  </p>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Footer ---------- */
-function SiteFooter() {
-  return (
-    <footer className="bg-[hsl(var(--navy))] text-white/70 px-6 lg:px-10 py-16">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="grid md:grid-cols-3 gap-10 mb-12">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="grid place-items-center w-10 h-10 rounded-[6px] bg-[hsl(var(--primary))] text-white font-extrabold text-lg">
-                BR
-              </span>
-              <span className="font-heading font-extrabold text-white text-[19px]">
-                Business Room
-              </span>
             </div>
-            <p className="text-[15px] leading-[1.6] max-w-xs">
-              ניהול חכם, מודולרי ומדויק לעסקים — הזירה שבה אסטרטגיה הופכת לתוצאה.
-            </p>
-          </div>
+        </section>
+    </main>
 
-          <div>
-            <h4 className="eyebrow text-white/40 mb-4">ניווט</h4>
-            <ul className="space-y-3 text-[15px]">
-              <li><a href="#solutions" className="hover:text-white transition-colors">פתרונות</a></li>
-              <li><a href="#trust" className="hover:text-white transition-colors">הוכחות</a></li>
-              <li><a href="#terminal" className="hover:text-white transition-colors">יצירת קשר</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="eyebrow text-white/40 mb-4">צרו קשר</h4>
-            <ul className="space-y-3 text-[15px]">
-              <li>
-                <a href="https://wa.me/972500000000" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                  ווטסאפ: 050-000-0000
-                </a>
-              </li>
-              <li>
-                <a href="mailto:office@businessroom.co.il" className="hover:text-white transition-colors">
-                  office@businessroom.co.il
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="h-px w-full bg-white/15 mb-6" />
-        <p className="text-[13px] text-white/40 text-center">
-          © {new Date().getFullYear()} Business Room — כל הזכויות שמורות. ניהול חכם לעסקים.
-        </p>
-      </div>
+    <!-- Footer -->
+    <footer class="bg-[#0f172a] text-white/70 px-6 lg:px-10 py-12 text-center">
+        <p class="text-sm">© 2026 Business Room — כל הזכויות שמורות.</p>
     </footer>
-  );
-}
 
-/* ---------- Page ---------- */
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-[hsl(var(--background))]">
-      <SiteHeader />
-      <main>
-        <AuthorityHero />
-        <LogicGrid />
-        <TrustHorizon />
-        <DecisionTerminal />
-      </main>
-      <SiteFooter />
-    </div>
-  );
-}
+    <!-- הפעלת אייקונים -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
