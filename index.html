@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Room - הזירה שבה אסטרטגיה הופכת לתוצאה</title>
-    <!-- טעינת Tailwind CSS -->
+    <title>Business Room — הזירה שבה אסטרטגיה הופכת לתוצאה</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- טעינת אייקונים Lucide -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --primary: #2563eb;
             --navy: #0f172a;
             --background: #f8fafc;
+            --foreground: #0f172a;
+            --card: #ffffff;
+        }
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
-<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-500 selection:text-white">
+<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
 
     <!-- Header -->
     <header id="site-header" class="sticky top-0 z-50 transition-all duration-300 bg-[#0f172a] text-white">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3 group">
-                <span class="grid place-items-center w-10 h-10 rounded-[6px] bg-blue-600 text-white font-extrabold text-lg tracking-tight transition-transform group-hover:scale-105">
+                <span class="grid place-items-center w-10 h-10 rounded-[6px] bg-blue-600 text-white font-extrabold text-lg transition-transform group-hover:scale-105">
                     BR
                 </span>
-                <span class="font-bold text-[19px] tracking-tight text-white">
+                <span class="font-extrabold text-[19px] tracking-tight text-white">
                     Business Room
                 </span>
             </a>
@@ -44,6 +49,21 @@
                     דברו איתנו בווטסאפ
                 </a>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden p-2 text-white" aria-label="פתח תפריט">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0f172a] border-t border-white/10 px-6 py-5 space-y-4">
+            <a href="#solutions" onclick="toggleMenu()" class="block text-base font-medium text-white/80">פתרונות</a>
+            <a href="#trust" onclick="toggleMenu()" class="block text-base font-medium text-white/80">הוכחות</a>
+            <a href="#terminal" onclick="toggleMenu()" class="block text-base font-medium text-white/80">יצירת קשר</a>
+            <a href="https://wa.me/972500000000" target="_blank" rel="noreferrer" class="block text-center text-blue-600 px-5 py-3 rounded-full bg-white font-semibold">
+                דברו איתנו בווטסאפ
+            </a>
         </div>
     </header>
 
@@ -63,7 +83,7 @@
                         </h1>
 
                         <p class="mt-8 max-w-xl text-[19px] leading-[1.6] text-white/80">
-                            בקום לנהל בין חמש מערכות, קבצים אבודים וקבוצות ווטסאפ — ריכזנו את כל ניהול העסק למקום אחד. חכם, אוטומטי ומדויק.
+                            בקום לנהל בין חמש מערכות, קבצים אבודים וקבוצות ווטסאפ — ריכזנו את כל ניהול העסק למקום אחד. חכם, אוטומטי ומדויק, כך שכל החלטה שלך נשענת על נתונים.
                         </p>
 
                         <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -75,14 +95,38 @@
                                 ראה איך זה עובד
                             </a>
                         </div>
+
+                        <div class="mt-14 grid grid-cols-3 gap-6 max-w-lg">
+                            <div>
+                                <div class="h-px w-full bg-white/25 mb-3"></div>
+                                <div class="font-extrabold text-2xl text-white">₪ 48,250</div>
+                                <div class="text-[13px] text-white/65 mt-1">רווח יזמי נטו, שנת מס</div>
+                            </div>
+                            <div>
+                                <div class="h-px w-full bg-white/25 mb-3"></div>
+                                <div class="font-extrabold text-2xl text-white">0</div>
+                                <div class="text-[13px] text-white/65 mt-1">משימות באיחור</div>
+                            </div>
+                            <div>
+                                <div class="h-px w-full bg-white/25 mb-3"></div>
+                                <div class="font-extrabold text-2xl text-white">5→1</div>
+                                <div class="text-[13px] text-white/65 mt-1">מערכות למקום אחד</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="lg:col-span-5 relative">
-                        <div class="relative aspect-[4/5] lg:aspect-[3/4] w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/20 flex items-center justify-center p-8 text-center">
-                            <div class="space-y-4">
-                                <i data-lucide="rocket" class="w-16 h-16 mx-auto text-white/80"></i>
-                                <h3 class="text-2xl font-bold">Business Room Live</h3>
-                                <p class="text-white/70 text-sm">המערכת המרכזית לשליטה מלאה בעסק שלך</p>
+                        <div class="relative aspect-[4/5] lg:aspect-[3/4] w-full overflow-hidden rounded-[16px] bg-slate-800/40 ring-1 ring-white/20 p-6 flex flex-col justify-between shadow-2xl">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span class="text-xs font-semibold text-white/70 uppercase">דשבורד חי • Business Room</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="text-xl font-bold">קמפיינים פעילים, תזרים מסודר, צוות מתואם.</div>
+                                <div class="flex justify-between text-sm bg-white/10 p-3 rounded-lg">
+                                    <span class="text-white/70">רווח יזמי</span>
+                                    <span class="font-bold text-white">₪ 48,250</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -90,7 +134,7 @@
             </div>
         </section>
 
-        <!-- Logic Grid -->
+        <!-- Logic Grid (Interactive Tabs) -->
         <section id="solutions" class="py-24 lg:py-32 px-6 lg:px-10 bg-[#f8fafc]">
             <div class="max-w-[1400px] mx-auto">
                 <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
@@ -103,75 +147,163 @@
                             מערכת אחת מודולרית — לכל צווארי הבקבוק של העסק.
                         </h2>
                     </div>
+                    <p class="text-[18px] leading-[1.6] text-slate-600 max-w-md">
+                        חמישה תחומים, תשובה אחת. בחר תחום וגלה איך Business Room פותר את הבעיה מהשורש.
+                    </p>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-6">
-                    <article class="bg-blue-600 rounded-[18px] p-8 sm:p-10 text-white flex flex-col justify-between">
+                    <!-- Dynamic Active Card -->
+                    <article id="domain-card" class="bg-blue-600 rounded-[18px] p-8 sm:p-10 text-white flex flex-col justify-between min-h-[420px]">
                         <div>
                             <div class="flex items-center justify-between mb-6">
-                                <span class="grid place-items-center w-14 h-14 rounded-[12px] bg-white/15 text-white">
+                                <span id="card-icon" class="grid place-items-center w-14 h-14 rounded-[12px] bg-white/15 text-white">
                                     <i data-lucide="megaphone" class="w-7 h-7"></i>
                                 </span>
-                                <span class="text-white/70 font-semibold">שיווק</span>
+                                <span id="card-tag" class="text-white/70 font-semibold text-sm">שיווק</span>
                             </div>
-                            <h3 class="font-extrabold text-white text-[28px] sm:text-[32px] mb-6">
+
+                            <h3 id="card-title" class="font-extrabold text-white text-[28px] sm:text-[32px] leading-[1.12] mb-6">
                                 שיווק שקורה — גם כשאתה לא יושב מולו
                             </h3>
+
                             <div class="space-y-4 text-[17px] leading-[1.6]">
-                                <p class="text-white/80"><strong>הבעיה — </strong> אתה יודע שצריך לפרסם באופן קבוע, אבל מתי נשאר זמן?</p>
-                                <p class="text-white/95"><strong>הפתרון — </strong> המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד.</p>
+                                <p class="text-white/80">
+                                    <strong class="text-white">הבעיה — </strong>
+                                    <span id="card-problem">אתה יודע שצריך להיות פעיל ברשתות ולפרסם באופן קבוע, אבל בין לקוחות לספקים — מתי בכלל נשאר זמן לתכנן תוכן?</span>
+                                </p>
+                                <p class="text-white/95">
+                                    <strong class="text-white">הפתרון — </strong>
+                                    <span id="card-solution">המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד — פוסט אינסטגרם, קמפיין וואטסאפ ודיוורים, מתוזמנים אוטומטית.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/20">
+                            <div id="card-proof" class="space-y-3">
+                                <div class="flex items-center justify-between text-[15px]">
+                                    <span class="text-white/75">ראשון 08:30 — פוסט אינסטגרם</span>
+                                    <span class="font-semibold text-white bg-white/15 px-3 py-1 rounded-[6px]">מתוזמן</span>
+                                </div>
+                                <div class="flex items-center justify-between text-[15px]">
+                                    <span class="text-white/75">שלישי 12:00 — קמפיין וואטסאפ</span>
+                                    <span class="font-semibold text-white bg-white/15 px-3 py-1 rounded-[6px]">פעיל</span>
+                                </div>
                             </div>
                         </div>
                     </article>
 
-                    <div class="space-y-3">
-                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
-                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-blue-600 text-white">
-                                <i data-lucide="wallet" class="w-6 h-6"></i>
-                            </span>
-                            <div>
-                                <h4 class="font-bold text-lg">פיננסים ותזרים</h4>
-                                <p class="text-sm text-slate-600">לדעת בדיוק איפה העסק עומד בכל רגע נתון</p>
-                            </div>
-                        </div>
-                        <div class="p-6 rounded-[14px] border bg-white border-slate-200 shadow-sm flex items-center gap-4">
-                            <span class="grid place-items-center w-12 h-12 rounded-[10px] bg-slate-100 text-slate-700">
-                                <i data-lucide="folder-kanban" class="w-6 h-6"></i>
-                            </span>
-                            <div>
-                                <h4 class="font-bold text-lg">ניהול משרד</h4>
-                                <p class="text-sm text-slate-600">כל התיק המשרדי במקום אחד בלי שיאבד דבר</p>
-                            </div>
-                        </div>
+                    <!-- Selection Buttons List -->
+                    <div id="domains-list" class="space-y-3">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Terminal / Contact Form -->
+        <!-- Trust Horizon -->
+        <section id="trust" class="py-20 lg:py-28 px-6 lg:px-10 bg-white border-y border-slate-200">
+            <div class="max-w-[1400px] mx-auto text-center">
+                <div class="flex items-center gap-3 mb-10 justify-center">
+                    <span class="w-8 h-px bg-slate-300"></span>
+                    <span class="text-slate-500 font-semibold text-sm uppercase">מנהלים שכבר עברו ל־Business Room</span>
+                    <span class="w-8 h-px bg-slate-300"></span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6 mb-16 items-center">
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">אקו נדל״ן</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">סטודיו קובלט</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">מכון פיסק</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">גרין פארם</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">לוי ארכיטקטים</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">טקסטורה</div>
+                    <div class="font-bold text-lg text-slate-400 hover:text-blue-600 transition-colors">אורבן פיננס</div>
+                </div>
+
+                <div class="grid sm:grid-cols-3 gap-6 text-right">
+                    <figure class="bg-slate-50 border border-slate-200 rounded-[16px] p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="text-blue-600 font-extrabold text-5xl leading-none mb-2">”</div>
+                            <blockquote class="text-[16px] leading-[1.6] text-slate-700">תוך שבועיים עברנו מקובץ ווטסאפ למערכת מסודרת. התזרים שלי סוף־סוף שקוף.</blockquote>
+                        </div>
+                        <figcaption class="flex items-center gap-3 mt-6 pt-5 border-t border-slate-200">
+                            <span class="grid place-items-center w-11 h-11 rounded-full bg-blue-600 text-white font-bold">ע</span>
+                            <div>
+                                <div class="font-bold text-slate-900 text-[15px]">עידן לוי</div>
+                                <div class="text-[13px] text-slate-500">מנכ״ל, אקו נדל״ן</div>
+                            </div>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="bg-slate-50 border border-slate-200 rounded-[16px] p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="text-blue-600 font-extrabold text-5xl leading-none mb-2">”</div>
+                            <blockquote class="text-[16px] leading-[1.6] text-slate-700">הקמפיינים רצים לבד. חסכתי שבע שעות בשבוע וההכנסה רק עלתה.</blockquote>
+                        </div>
+                        <figcaption class="flex items-center gap-3 mt-6 pt-5 border-t border-slate-200">
+                            <span class="grid place-items-center w-11 h-11 rounded-full bg-blue-600 text-white font-bold">מ</span>
+                            <div>
+                                <div class="font-bold text-slate-900 text-[15px]">מאיה קובלט</div>
+                                <div class="text-[13px] text-slate-500">בעלים, סטודיו קובלט</div>
+                            </div>
+                        </figcaption>
+                    </figure>
+
+                    <figure class="bg-slate-50 border border-slate-200 rounded-[16px] p-7 flex flex-col justify-between">
+                        <div>
+                            <div class="text-blue-600 font-extrabold text-5xl leading-none mb-2">”</div>
+                            <blockquote class="text-[16px] leading-[1.6] text-slate-700">הצוות סוף־סוף יודע מה קורה. אפס משימות שנופלות בין הכיסאות.</blockquote>
+                        </div>
+                        <figcaption class="flex items-center gap-3 mt-6 pt-5 border-t border-slate-200">
+                            <span class="grid place-items-center w-11 h-11 rounded-full bg-blue-600 text-white font-bold">ר</span>
+                            <div>
+                                <div class="font-bold text-slate-900 text-[15px]">רון פיסק</div>
+                                <div class="text-[13px] text-slate-500">מנהל, מכון פיסק</div>
+                            </div>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- Decision Terminal (Working Form) -->
         <section id="terminal" class="relative px-6 lg:px-10 py-24 bg-blue-600 text-white">
             <div class="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-10 items-center">
                 <div class="lg:col-span-7">
                     <h2 class="font-extrabold text-[36px] sm:text-[48px] leading-[1.08] mb-6">
-                        מוכנים להפסיק<br>לנהל הכל לבד?
+                        מוכנים להפסיק<br>לנהל הכול לבד?
                     </h2>
-                    <p class="text-[18px] text-white/80 max-w-xl">
-                        שלושה שדות בלבד — ואנחנו כבר בדרך אליכם עם מענה דיסקרטי ומקצועי.
+                    <p class="text-[18px] text-white/80 max-w-xl leading-relaxed">
+                        ספרו לנו מי אתם ובאיזה תחום תרצו שנתחיל. נציג יצור קשר ויראה לכם — בשיחה אישית ודיסקרטית — איך Business Room יחסוך לכם זמן וכסף.
                     </p>
                 </div>
+
                 <div class="lg:col-span-5">
-                    <div class="bg-white text-slate-900 rounded-[18px] p-7 sm:p-9 shadow-2xl">
-                        <h3 class="font-extrabold text-2xl mb-4">יצירת קשר</h3>
-                        <form onsubmit="event.preventDefault(); alert('הפנייה נקלטים בהצלחה!');" class="space-y-4">
+                    <div id="form-container" class="bg-white text-slate-900 rounded-[18px] p-7 sm:p-9 shadow-2xl">
+                        <h3 class="font-extrabold text-2xl mb-1">יצירת קשר</h3>
+                        <p class="text-slate-500 text-sm mb-6">שלושה שדות בלבד — ואנחנו כבר בדרך אליכם.</p>
+                        
+                        <form id="lead-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
                             <div>
-                                <label class="block text-sm font-semibold mb-1">שם מלא *</label>
-                                <input type="text" required placeholder="ישראל ישראלי" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">שם מלא *</label>
+                                <input type="text" id="full_name" required placeholder="ישראל ישראלי" class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-600">
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-1">טלפון נייד *</label>
-                                <input type="tel" required placeholder="050-0000000" class="w-full rounded-lg border border-slate-300 p-3 text-base">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">טלפון נייד *</label>
+                                <input type="tel" id="phone" required placeholder="050-0000000" class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-600">
                             </div>
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-full transition-colors shadow-lg">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">תחום עניין</label>
+                                <select id="interest" class="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-600">
+                                    <option value="שיווק אוטומטי">שיווק אוטומטי</option>
+                                    <option value="פיננסים">פיננסים</option>
+                                    <option value="ניהול משרד">ניהול משרד</option>
+                                    <option value="ניהול צוות">ניהול צוות</option>
+                                    <option value="תכנון פרויקט">תכנון פרויקט</option>
+                                    <option value="כללי" selected>כללי</option>
+                                </select>
+                            </div>
+                            <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-full transition-colors shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2">
                                 התחל שינוי
                             </button>
                         </form>
@@ -182,12 +314,169 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#0f172a] text-white/70 px-6 lg:px-10 py-12 text-center">
-        <p class="text-sm">© 2026 Business Room — כל הזכויות שמורות.</p>
+    <footer class="bg-[#0f172a] text-white/70 px-6 lg:px-10 py-12 text-center border-t border-white/10">
+        <p class="text-sm">© 2026 Business Room — כל הזכויות שמורות. ניהול חכם לעסקים.</p>
     </footer>
 
-    <!-- הפעלת אייקונים -->
+    <!-- Interactive Logic Script -->
     <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        document.getElementById('menu-btn').addEventListener('click', toggleMenu);
+
+        // Domains Data
+        const domainsData = [
+            {
+                id: "marketing",
+                icon: "megaphone",
+                tag: "שיווק",
+                title: "שיווק שקורה — גם כשאתה לא יושב מולו",
+                problem: "אתה יודע שצריך להיות פעיל ברשתות ולפרסם באופן קבוע, אבל בין לקוחות לספקים — מתי בכלל נשאר זמן לתכנן תוכן?",
+                solution: "המערכת בונה, מתזמנת ומנהלת את כל הקמפיינים במקום אחד — פוסט אינסטגרם, קמפיין וואטסאפ ודיוורים, מתוזמנים אוטומטית.",
+                metric: "קמפיינים מתוזמנים",
+                proof: [
+                    { label: "ראשון 08:30 — פוסט אינסטגרם", state: "מתוזמן" },
+                    { label: "שלישי 12:00 — קמפיין וואטסאפ", state: "פעיל" }
+                ]
+            },
+            {
+                id: "finance",
+                icon: "wallet",
+                tag: "פיננסים",
+                title: "לדעת בדיוק איפה העסק עומד — בכל רגע נתון",
+                problem: "הצעות מחיר שנשלחות באיחור, חשבוניות שנשכחות ותזרימים שקשה לעקוב אחריהם עולים לך כסף אמיתי.",
+                solution: "הכל אוטומטי, מדויק ובזמן אמת — רווח יזמי נטו אחרי הוצאות, מס, עתודה ומעשרות, מול העיניים שלך.",
+                metric: "₪48,250 נטו",
+                proof: [
+                    { label: "רווח יזמי נטו — שנת המס", state: "₪ 48,250" },
+                    { label: "מעקב הוצאות ותזרים", state: "בזמן אמת" }
+                ]
+            },
+            {
+                id: "office",
+                icon: "folder-kanban",
+                tag: "ניהול משרד",
+                title: "כל התיק המשרדי במקום אחד — לא נשכח שוב",
+                problem: "לקוחות, משימות, טפסים וחוזים מפוזרים בין וואטסאפ, מייל ופתקים צהובים. קל מדי לאבד משהו חשוב באמצע היום.",
+                solution: "כרטיסי לקוחות, יומן ומשימות, חוזים וטפסים — הכול מרוכז, מסודר ונגיש מכל מכשיר.",
+                metric: "0 משימות באיחור",
+                proof: [
+                    { label: "כרטיסי לקוחות", state: "מרוכז" },
+                    { label: "יומן ומשימות", state: "מסונכרן" }
+                ]
+            },
+            {
+                id: "team",
+                icon: "users",
+                tag: "ניהול צוות",
+                title: "צוות שיודע מה קורה — עובד מהר יותר",
+                problem: "לתאם צוות זו עבודה בפני עצמה — מי עשה מה, מי נמצא היום, והכול מדברים באותה שפה בלי בלגן.",
+                solution: "שעון נוכחות, דיווח שעות ואישורים אוטומטיים, ערוץ צוותי מסודר שמחליף קבוצת וואטסאפ כאוטית.",
+                metric: "נוכחות אוטומטית",
+                proof: [
+                    { label: "דיווח שעות ונוכחות", state: "אוטומטי" },
+                    { label: "ערוץ צוותי מאוחד", state: "פעיל" }
+                ]
+            },
+            {
+                id: "projects",
+                icon: "rocket",
+                tag: "תכנון פרויקט",
+                title: "כל פרויקט מתוכנן, עוקב אחר עצמו ומתריע בזמן",
+                problem: "פרויקט בלי ציר זמן ברור הוא רעיון בלי תאריך. וכשיש כמה פרויקטים במקביל — קל מאוד לאבד שליטה.",
+                solution: "גאנט חכם, מעקב התקדמות אוטומטי והתראות מיידיות כשמשהו מתעכב — לפני שזה עולה לך בלקוח.",
+                metric: "אפס איחורים",
+                proof: [
+                    { label: "מעקב התקדמות אוטומטי", state: "פעיל" },
+                    { label: "התראות איחור", state: "מיידיות" }
+                ]
+            }
+        ];
+
+        let activeDomainId = "marketing";
+
+        function renderDomains() {
+            const listEl = document.getElementById('domains-list');
+            listEl.innerHTML = "";
+
+            domainsData.forEach(d => {
+                const isActive = d.id === activeDomainId;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-right flex items-center gap-5 p-5 sm:p-6 rounded-[14px] border transition-all duration-200 cursor-pointer ${
+                    isActive 
+                        ? "bg-white border-blue-600 shadow-lg shadow-blue-600/10" 
+                        : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                }`;
+                btn.onclick = () => {
+                    activeDomainId = d.id;
+                    updateActiveDomainCard();
+                    renderDomains();
+                };
+
+                btn.innerHTML = `
+                    <span class="grid place-items-center w-12 h-12 rounded-[10px] shrink-0 transition-colors ${isActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}">
+                        <i data-lucide="${d.icon}" class="w-6 h-6"></i>
+                    </span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <h4 class="font-bold text-[19px] tracking-tight ${isActive ? "text-slate-900" : "text-slate-700"}">${d.tag}</h4>
+                            <span class="text-[13px] font-semibold ${isActive ? "text-blue-600" : "text-slate-400"}">${d.metric}</span>
+                        </div>
+                        <p class="text-[14px] text-slate-500 mt-1 truncate">${d.title}</p>
+                    </div>
+                `;
+                listEl.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        function updateActiveDomainCard() {
+            const d = domainsData.find(item => item.id === activeDomainId);
+            if (!d) return;
+
+            document.getElementById('card-icon').innerHTML = `<i data-lucide="${d.icon}" class="w-7 h-7"></i>`;
+            document.getElementById('card-tag').textContent = d.tag;
+            document.getElementById('card-title').textContent = d.title;
+            document.getElementById('card-problem').textContent = d.problem;
+            document.getElementById('card-solution').textContent = d.solution;
+
+            const proofEl = document.getElementById('card-proof');
+            proofEl.innerHTML = d.proof.map(p => `
+                <div class="flex items-center justify-between text-[15px]">
+                    <span class="text-white/75">${p.label}</span>
+                    <span class="font-semibold text-white bg-white/15 px-3 py-1 rounded-[6px]">${p.state}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const container = document.getElementById('form-container');
+            container.innerHTML = `
+                <div class="text-center py-10">
+                    <div class="grid place-items-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mx-auto mb-5">
+                        <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+                    </div>
+                    <h3 class="font-extrabold text-slate-900 text-[24px] mb-2">תודה רבה!</h3>
+                    <p class="text-slate-600 text-[16px] leading-[1.6] max-w-xs mx-auto">
+                        קיבלנו את פנייתך. נציג יצור איתך קשר בהקדם האפשרי.
+                    </p>
+                    <button onclick="location.reload()" class="mt-6 text-[15px] font-semibold text-blue-600 hover:underline">
+                        שלח פנייה נוספת
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Initialize
+        renderDomains();
+        updateActiveDomainCard();
         lucide.createIcons();
     </script>
 </body>
